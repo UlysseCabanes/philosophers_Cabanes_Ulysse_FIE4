@@ -23,6 +23,5 @@ public class Table {
         rigaud.leaveTable();
         conchon.leaveTable();
         bastide.leaveTable();
-
     }
 }

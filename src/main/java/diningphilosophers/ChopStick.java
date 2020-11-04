@@ -13,7 +13,19 @@ public class ChopStick {
         myNumber = ++stickCount;
     }
 
-    // ...
+    synchronized public void take() throws InterruptedException {
+        while (!iAmFree) {
+            wait();
+        }
+        iAmFree = false;
+        System.out.println("Le stick " + myNumber + " a été pris");
+    }
+
+    synchronized public void release() {
+        System.out.println("Le stick " + myNumber + " a été posé");
+        iAmFree = true;
+        notifyAll(); 
+    }
     
     @Override
     public String toString() {

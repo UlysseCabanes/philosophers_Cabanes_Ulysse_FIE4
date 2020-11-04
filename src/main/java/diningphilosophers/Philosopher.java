@@ -1,10 +1,11 @@
 package diningphilosophers;
 
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
-public class Philosopher
-        extends Thread {
+public class Philosopher extends Thread {
 
     private static int seed = 1;
     // Un générateur aléatoire pour tirer au sort les durées
@@ -22,12 +23,31 @@ public class Philosopher
 
     @Override
     public void run() {
-
+        while(running) { 
+            try {
+                // tant qu’il ne quitte pas la table
+                think();
+                // Prendre les 2 baguettes
+                myLeftStick.take();
+                myRightStick.take();
+                // Il peut manger
+                eat();
+                // Il relache les baguettes
+                myLeftStick.release();
+                myRightStick.release();
+            }
+            catch (InterruptedException ex) {
+                Logger.getLogger(Philosopher.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     // Permet d'interrompre le philosophe "proprement" :
     // Il doit relâcher ses baguettes avant de s'arrêter
     public void leaveTable() {
+        // Il relache les baguettes
+        myLeftStick.release();
+        myRightStick.release();
         running = false;
     }
 
